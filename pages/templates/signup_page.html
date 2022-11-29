@@ -9,19 +9,19 @@
         <center>
             <h2>SIGNUP</h2>
             <hr>
+            {% if messages %}
+                {% for message in messages %}
+                    <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
             <form action="{% url 'signup_page' %}" method="POST">
                 {% csrf_token %}
-                <p><b>Username: </b><input type="text" name="username" placeholder="Enter your username" required></input></p>
+                <p><b>Username: </b><input type="text" name="username" placeholder="Enter your username" maxlength="150" required></input></p>
                 <p><b>Password: </b><input type="password" name="password" placeholder="Enter your password" required></input></p>
+                <p><b>Confirm Password: </b><input type="password" name="confirm_password" placeholder="Confirm your password" required></input></p>
+                <p><b>ZIP Code: </b><input type="text" name="zip" placeholder="Enter your ZIP Code" minlength="5" maxlength="5" required></input></p>
                 <input type="submit" value="SIGNUP">
             </form>
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
-                    {% endfor %}
-                </ul>
-            {% endif %}
             <hr>
             <h4>Click the button below to login.</h4>
             <a href="{% url 'login_page' %}">LOGIN</a>
