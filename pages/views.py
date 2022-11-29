@@ -37,6 +37,25 @@ def signup_page(request):
             user = User.objects.create_user(username=user_info["username"], password=user_info["password"], zip=user_info["zip"])
             return redirect(login_page)
 
+def password_reset(request):
+    if request.method == "GET":
+        return render(request, 'password_reset.html')
+    if request.method == "POST":
+        user_info = request.POST
+        if User.objects.filter(username=user_info["username"]).exists():
+            if user_info["new_password"] == user_info["confirm_new_password"]:
+                reset_password = User.objects.get(username=user_info["username"])
+                reset_password.set_password(user_info["new_password"])
+                reset_password.save()
+                messages.add_message(request, messages.SUCCESS, "The password associated with the username has been reset. You can now login.")
+                return redirect(password_reset)
+            else:
+                messages.add_message(request, messages.ERROR, "Passwords do not match. Please ensure both password fields match.")
+                return redirect(password_reset)
+        else:
+            messages.add_message(request, messages.ERROR, "The username does not exist.")
+            return redirect(password_reset)
+
 @login_required
 def index(request):
     return render(request, 'index.html', { "username": request.user.username, "password": request.user.password, "zip": request.user.zip })
