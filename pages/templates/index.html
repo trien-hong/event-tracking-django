@@ -8,6 +8,8 @@
     <body>
         <center>
             <a href="{% url 'logout_action' %}">LOGOUT</a>
+            <a href="{% url 'index' %}">HOMEPAGE</a>
+            <a href="{% url 'profile' %}">PROFILE</a>
             {% if messages %}
                 {% for message in messages %}
                     <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
@@ -17,10 +19,18 @@
                 {% for event in events %}
                     <p>{{event.1}}</p>
                     <img src="{{event.2}}" alt="TBD" style="width:225px;height:126px;">
-                    <p>{{event.3}}</p>
-                    <p>{{event.4}}</p>
-                    <p>{{event.5}}</p>
-                    <p>{{event.6}}</p>
+                    <p>{{event.3}} | {{event.4}}</p>
+                    <p>{{event.5}} - {{event.6}}</p>
+                    <form id="{{event.0}}" action="addEventToDatabase/" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="eventId" value="{{event.0}}" readonly="readonly" form="{{event.0}}">
+                        <input type="hidden" name="eventTitle" value="{{event.1}}" readonly="readonly" form="{{event.0}}">
+                        <input type="hidden" name="eventImageUrl" value="{{event.2}}" readonly="readonly" form="{{event.0}}">
+                        <input type="hidden" name="eventDate" value="{{event.3}}" readonly="readonly" form="{{event.0}}">
+                        <input type="hidden" name="eventLocation" value="{{event.4}}" readonly="readonly" form="{{event.0}}">
+                        <input type="hidden" name="eventPrice" value="{{event.5}} - {{event.6}}" readonly="readonly" form="{{event.0}}">
+                        <input type="submit" value="ADD EVENT" form="{{event.0}}">
+                    </form>
                     <hr>
                 {% endfor %}
             {% endif %}

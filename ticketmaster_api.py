@@ -23,7 +23,7 @@ def getEvents(parameter):
                     return False
 
         idList = []
-        nameList = []
+        titleList = []
         imageList = []
         dateList = []
         cityList = []
@@ -37,9 +37,9 @@ def getEvents(parameter):
                     idList.append(x["id"])
                     
                     if "name" in ticketmaster_response_json["_embedded"]["events"][index]:
-                        nameList.append(x["name"])
+                        titleList.append(x["name"])
                     else:
-                        nameList.append("TBD")
+                        titleList.append("TBD")
                     
                     if "images" in ticketmaster_response_json["_embedded"]["events"][index]:
                         if "url" in ticketmaster_response_json["_embedded"]["events"][index]["images"][0]:
@@ -74,4 +74,4 @@ def getEvents(parameter):
                     else:
                         maxPriceList.append("TBD")
 
-        return zip(idList, nameList, imageList, dateList, cityList, minPriceList, maxPriceList)
+        return zip(idList, titleList, imageList, dateList, cityList, minPriceList, maxPriceList)

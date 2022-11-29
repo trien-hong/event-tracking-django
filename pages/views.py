@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from . import views
+from . models import UserEvents
 import ticketmaster_api
 
 def login_page(request):
@@ -64,6 +65,22 @@ def index(request):
     if events == False:
         messages.add_message(request, messages.INFO, "The zipcode you entered does not have any events.")
     return render(request, 'index.html', { "events": events })
+
+@login_required
+def profile(request):
+    if UserEvents.objects.filter(user_id=request.user.id).exists():
+        events = list(UserEvents.objects.all().filter(user_id=request.user.id))
+        return render(request, 'profile.html', { "events": events })
+    else:
+        messages.add_message(request, messages.INFO, "You currently do not have any events in your list.")
+        return render(request, 'profile.html')
+
+@login_required
+def addEventToDatabase(request):
+    event_info = request.POST
+    add_event = UserEvents(event_id=event_info["eventId"], event_title=event_info["eventTitle"], event_image_url=event_info["eventImageUrl"], event_date=event_info["eventDate"], event_location=event_info["eventLocation"], event_price=event_info["eventPrice"], user_id=request.user.id)
+    add_event.save()
+    return redirect(index)
 
 @login_required
 def logout_action(request):
