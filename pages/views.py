@@ -63,7 +63,7 @@ def password_reset(request):
 def index(request):
     events = ticketmaster_api.getEvents(str(request.user.zip))
     if events == False:
-        messages.add_message(request, messages.INFO, "The zipcode you entered does not have any events.")
+        messages.add_message(request, messages.INFO, "The ZIP code on your profile does not contain any events.")
     return render(request, 'index.html', { "events": events })
 
 @login_required
@@ -77,10 +77,25 @@ def profile(request):
 
 @login_required
 def addEventToDatabase(request):
-    event_info = request.POST
-    add_event = UserEvents(event_id=event_info["eventId"], event_title=event_info["eventTitle"], event_image_url=event_info["eventImageUrl"], event_date=event_info["eventDate"], event_location=event_info["eventLocation"], event_price=event_info["eventPrice"], user_id=request.user.id)
-    add_event.save()
+    if request.method == "POST":
+        event_info = request.POST
+        if UserEvents.objects.filter(user_id=request.user.id, event_id=event_info["eventId"]).exists():
+            messages.add_message(request, messages.ERROR, "You already have this event in your list. Try adding a different event.")
+        else:
+            add_event = UserEvents(event_id=event_info["eventId"], event_title=event_info["eventTitle"], event_image_url=event_info["eventImageUrl"], event_date=event_info["eventDate"], event_location=event_info["eventLocation"], event_price=event_info["eventPrice"], user_id=request.user.id)
+            add_event.save()
+            messages.add_message(request, messages.SUCCESS, "Event was successfully added to your list.")
     return redirect(index)
+
+@login_required
+def deleteEventFromDatabase(request):
+    if request.method == "POST":
+        event_info = request.POST
+        delete_event = UserEvents.objects.get(event_id=event_info["eventId"], user_id=request.user.id)
+        delete_event.delete()
+        if UserEvents.objects.filter(user_id=request.user.id).exists():
+            messages.add_message(request, messages.SUCCESS, "Event was successfully deleted from your list.")
+    return redirect(profile)
 
 @login_required
 def logout_action(request):

@@ -9,5 +9,6 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('index/addEventToDatabase/', views.addEventToDatabase, name='addEventToDatabase'),
     path('profile/', views.profile, name='profile'),
+    path('profile/deleteEventFromDatabase/', views.deleteEventFromDatabase, name='deleteEventFromDatabase'),
     path('logout_action/', views.logout_action, name='logout_action'),
 ]

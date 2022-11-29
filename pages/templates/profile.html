@@ -21,6 +21,11 @@
                 <p>{{event.event_date}}</p>
                 <p>{{event.event_location}}</p>
                 <p>{{event.event_price}}</p>
+                <form id="{{event.event_id}}" action="deleteEventFromDatabase/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="eventId" value="{{event.event_id}}" readonly="readonly" form="{{event.event_id}}">
+                    <input type="submit" value="REMOVE EVENT" form="{{event.event_id}}">
+                </form>
                 <hr>
             {% endfor %}
         </center>
