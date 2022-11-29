@@ -8,7 +8,22 @@
     <body>
         <center>
             <a href="{% url 'logout_action' %}">LOGOUT</a>
-            <h1>{{username}}</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
+            {% if events %}
+                {% for event in events %}
+                    <p>{{event.1}}</p>
+                    <img src="{{event.2}}" alt="TBD" style="width:225px;height:126px;">
+                    <p>{{event.3}}</p>
+                    <p>{{event.4}}</p>
+                    <p>{{event.5}}</p>
+                    <p>{{event.6}}</p>
+                    <hr>
+                {% endfor %}
+            {% endif %}
         </center>
     </body>
 </html>

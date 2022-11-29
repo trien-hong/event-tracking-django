@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from . import views
+import ticketmaster_api
 
 def login_page(request):
     if request.method == "GET":
@@ -30,12 +31,13 @@ def signup_page(request):
         elif user_info["password"] != user_info["confirm_password"]:
             messages.add_message(request, messages.ERROR, "Passwords do not match. Please ensure both password fields match.")
             return redirect(signup_page)
-        elif user_info["zip"].isnumeric() is False:
+        elif user_info["zip"].isnumeric() == False:
             messages.add_message(request, messages.ERROR, "ZIP Code should only contain numeric values (0-9).")
             return redirect(signup_page)
         else:
             user = User.objects.create_user(username=user_info["username"], password=user_info["password"], zip=user_info["zip"])
-            return redirect(login_page)
+            messages.add_message(request, messages.SUCCESS, "User has been successfully created. You may now login.")
+            return redirect(signup_page)
 
 def password_reset(request):
     if request.method == "GET":
@@ -58,7 +60,10 @@ def password_reset(request):
 
 @login_required
 def index(request):
-    return render(request, 'index.html', { "username": request.user.username, "password": request.user.password, "zip": request.user.zip })
+    events = ticketmaster_api.getEvents(str(request.user.zip))
+    if events == False:
+        messages.add_message(request, messages.INFO, "The zipcode you entered does not have any events.")
+    return render(request, 'index.html', { "events": events })
 
 @login_required
 def logout_action(request):
