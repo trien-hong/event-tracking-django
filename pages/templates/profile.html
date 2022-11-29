@@ -10,6 +10,8 @@
             <a href="{% url 'logout_action' %}">LOGOUT</a>
             <a href="{% url 'index' %}">HOMEPAGE</a>
             <a href="{% url 'profile' %}">PROFILE</a>
+            <a href="{% url 'settings' %}">SETTINGS</a>
+            <h2>Welcome, {{username}}!</h2>
             {% if messages %}
                 {% for message in messages %}
                     <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>

@@ -70,10 +70,33 @@ def index(request):
 def profile(request):
     if UserEvents.objects.filter(user_id=request.user.id).exists():
         events = list(UserEvents.objects.all().filter(user_id=request.user.id))
-        return render(request, 'profile.html', { "events": events })
+        return render(request, 'profile.html', { "username": request.user.username, "events": events })
     else:
         messages.add_message(request, messages.INFO, "You currently do not have any events in your list.")
-        return render(request, 'profile.html')
+        return render(request, 'profile.html', { "username": request.user.username })
+
+@login_required
+def settings(request):
+    if request.method == "GET":
+        return render(request, 'settings.html', { "username": request.user.username })
+    if request.method == "POST":
+        user_info = request.POST
+        # it doesn't go through all the checks for a typical username/password
+        # mostly just basic checks
+        if user_info["new_username"] != "" and user_info["new_username"].isspace() == False:
+            update_username = User.objects.get(id=request.user.id)
+            update_username.username = user_info["new_username"]
+            update_username.save()
+        if user_info["new_zip"] != "":
+            update_zip = User.objects.get(id=request.user.id)
+            update_zip.zip = user_info["new_zip"]
+            update_zip.save()
+        if (user_info["new_password"] != "" and user_info["confirm_new_password"] != "") and (user_info["new_password"] == user_info["confirm_new_password"]):
+            update_password = User.objects.get(id=request.user.id)
+            update_password.set_password(user_info["new_password"])
+            update_password.save()
+            return redirect(login_page)
+        return redirect(settings)
 
 @login_required
 def addEventToDatabase(request):
