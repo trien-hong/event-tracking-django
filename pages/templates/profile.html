@@ -3,7 +3,8 @@
         <head>
             <meta charset="UTF-8">
             <title>Profile</title>
-            <!-- <link rel="stylesheet" href="./style.css"> -->
+            {% load static %}
+            <link rel="stylesheet" href="../static/style.css">
         </head>
     <body>
         <center>
@@ -17,19 +18,21 @@
                     <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
                 {% endfor %}
             {% endif %}
-            {% for event in events %}
-                <p>{{event.event_title}}</p>
-                <p>{{event.event_image_url}}</p>
-                <p>{{event.event_date}}</p>
-                <p>{{event.event_location}}</p>
-                <p>{{event.event_price}}</p>
-                <form id="{{event.event_id}}" action="deleteEventFromDatabase/" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="eventId" value="{{event.event_id}}" readonly="readonly" form="{{event.event_id}}">
-                    <input type="submit" value="REMOVE EVENT" form="{{event.event_id}}">
-                </form>
-                <hr>
-            {% endfor %}
+            <div class="events">
+                {% for event in events %}
+                    <div class="event_border">
+                        <p>{{event.event_title}}</p>
+                        <p>{{event.event_date}} &nbsp|&nbsp {{event.event_location}}</p>
+                        <img src="{{event.event_image_url}}" alt="TBD" style="width:225px;height:126px;">
+                        <p>{{event.event_price}}</p>
+                        <form id="{{event.event_id}}" action="deleteEventFromDatabase/" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="eventId" value="{{event.event_id}}" readonly="readonly" form="{{event.event_id}}">
+                            <input type="submit" value="REMOVE EVENT" form="{{event.event_id}}">
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
         </center>
     </body>
 </html>

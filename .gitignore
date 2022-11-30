@@ -1,3 +1,5 @@
 .env
 *.pyc
 *.pyo
+pages/migrations/*
+!pages/migrations/__init__.py

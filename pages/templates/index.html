@@ -3,7 +3,8 @@
         <head>
             <meta charset="UTF-8">
             <title>Homepage</title>
-            <!-- <link rel="stylesheet" href="./style.css"> -->
+            {% load static %}
+            <link rel="stylesheet" href="../static/style.css">
         </head>
     <body>
         <center>
@@ -16,23 +17,26 @@
                 {% endfor %}
             {% endif %}
             {% if events %}
-                {% for event in events %}
-                    <p>{{event.1}}</p>
-                    <img src="{{event.2}}" alt="TBD" style="width:225px;height:126px;">
-                    <p>{{event.3}} | {{event.4}}</p>
-                    <p>{{event.5}} - {{event.6}}</p>
-                    <form id="{{event.0}}" action="addEventToDatabase/" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="eventId" value="{{event.0}}" readonly="readonly" form="{{event.0}}">
-                        <input type="hidden" name="eventTitle" value="{{event.1}}" readonly="readonly" form="{{event.0}}">
-                        <input type="hidden" name="eventImageUrl" value="{{event.2}}" readonly="readonly" form="{{event.0}}">
-                        <input type="hidden" name="eventDate" value="{{event.3}}" readonly="readonly" form="{{event.0}}">
-                        <input type="hidden" name="eventLocation" value="{{event.4}}" readonly="readonly" form="{{event.0}}">
-                        <input type="hidden" name="eventPrice" value="{{event.5}} - {{event.6}}" readonly="readonly" form="{{event.0}}">
-                        <input type="submit" value="ADD EVENT" form="{{event.0}}">
-                    </form>
-                    <hr>
-                {% endfor %}
+                <div class="events">
+                    {% for event in events %}
+                        <div class="event_border">
+                            <p>{{event.1}}</p>
+                            <p>{{event.3}} &nbsp|&nbsp {{event.4}}</p>
+                            <img src="{{event.2}}" alt="TBD" style="width:225px;height:126px;">
+                            <p>{{event.5}} - {{event.6}}</p>
+                            <form id="{{event.0}}" action="addEventToDatabase/" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="eventId" value="{{event.0}}" readonly="readonly" form="{{event.0}}">
+                                <input type="hidden" name="eventTitle" value="{{event.1}}" readonly="readonly" form="{{event.0}}">
+                                <input type="hidden" name="eventImageUrl" value="{{event.2}}" readonly="readonly" form="{{event.0}}">
+                                <input type="hidden" name="eventDate" value="{{event.3}}" readonly="readonly" form="{{event.0}}">
+                                <input type="hidden" name="eventLocation" value="{{event.4}}" readonly="readonly" form="{{event.0}}">
+                                <input type="hidden" name="eventPrice" value="{{event.5}} - {{event.6}}" readonly="readonly" form="{{event.0}}">
+                                <input type="submit" value="ADD EVENT" form="{{event.0}}">
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         </center>
     </body>

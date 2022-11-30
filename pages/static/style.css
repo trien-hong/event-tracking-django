@@ -1,0 +1,17 @@
+body {
+    background-color: #D0EED4;
+}
+
+.events {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 20px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.event_border {
+    background-color: #E6E6E6;
+    border-style: solid;
+    padding-bottom: 6%;
+}
