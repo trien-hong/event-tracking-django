@@ -137,7 +137,10 @@ def addEventToDatabase(request):
             add_event = UserEvents(event_id=event_info["eventId"], event_title=event_info["eventTitle"], event_image_url=event_info["eventImageUrl"], event_date=event_info["eventDate"], event_location=event_info["eventLocation"], event_price=event_info["eventPrice"], user_id=request.user.id)
             add_event.save()
             messages.add_message(request, messages.SUCCESS, "Event was successfully added to your list.")
-    return redirect(index)
+    if event_info["locationOfUrl"] == "search":
+        return redirect(search)
+    else:
+        return redirect(index)
 
 @login_required
 def deleteEventFromDatabase(request):

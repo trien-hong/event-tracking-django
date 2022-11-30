@@ -48,6 +48,7 @@
                             <p>{{event.5}} - {{event.6}}</p>
                             <form id="{{event.0}}" action="{% url 'addEventToDatabase' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="locationOfUrl" value="homepage" readonly="readonly" form="{{event.0}}">
                                 <input type="hidden" name="eventId" value="{{event.0}}" readonly="readonly" form="{{event.0}}">
                                 <input type="hidden" name="eventTitle" value="{{event.1}}" readonly="readonly" form="{{event.0}}">
                                 <input type="hidden" name="eventImageUrl" value="{{event.2}}" readonly="readonly" form="{{event.0}}">
