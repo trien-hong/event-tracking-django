@@ -1,5 +1,5 @@
 body {
-    background-color: #D0EED4;
+    background-color: #EED9AB;
 }
 
 .events {
@@ -7,11 +7,32 @@ body {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
     gap: 20px;
     width: 70%;
+    padding: 1%;
     margin: 0 auto;
 }
 
 .event_border {
     background-color: #E6E6E6;
     border-style: solid;
-    padding-bottom: 6%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.profile_settings_border {
+    background-color: #E6E6E6;
+    border-style: solid;
+    display: inline-block;
+    padding: 10px;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+.info {
+    color: black;
 }
