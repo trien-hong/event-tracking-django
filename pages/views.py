@@ -67,6 +67,17 @@ def index(request):
     return render(request, 'index.html', { "events": events })
 
 @login_required
+def search(request):
+    if request.method == "GET":
+        return render(request, 'search.html', { "events": request.session["events"], "input": request.session["input"]})
+    if request.method == "POST":
+        input = request.POST
+        events = ticketmaster_api.getEvents(str(input["user_input"]))
+        request.session["events"] = list(events)
+        request.session["input"] = input["user_input"]
+        return redirect(search)
+
+@login_required
 def profile(request):
     if UserEvents.objects.filter(user_id=request.user.id).exists():
         events = list(UserEvents.objects.all().filter(user_id=request.user.id))

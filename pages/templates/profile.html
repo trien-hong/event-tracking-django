@@ -10,20 +10,27 @@
     <body>
         <center>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item px-1">
-                        <a class="btn btn-primary" href="{% url 'index' %}">HOMEPAGE</a>
-                    </li>
-                    <li class="nav-item px-1">
-                        <a class="btn btn-primary" href="{% url 'profile' %}"><u>PROFILE</u></a>
-                    </li>
-                    <li class="nav-item px-1">
-                        <a class="btn btn-primary" href="{% url 'settings' %}">SETTINGS</a>
-                    </li>
-                    <li class="nav-item px-1">
-                        <a class="btn btn-primary" href="{% url 'logout_action' %}">LOGOUT</a>
-                    </li>
-                </ul>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item px-1">
+                            <a class="btn btn-primary" href="{% url 'index' %}">HOMEPAGE</a>
+                        </li>
+                        <li class="nav-item px-1">
+                            <a class="btn btn-primary" href="{% url 'profile' %}"><u>PROFILE</u></a>
+                        </li>
+                        <li class="nav-item px-1">
+                            <a class="btn btn-primary" href="{% url 'settings' %}">SETTINGS</a>
+                        </li>
+                        <li class="nav-item px-1">
+                            <a class="btn btn-primary" href="{% url 'logout_action' %}">LOGOUT</a>
+                        </li>
+                    </ul>
+                </div>
+                <form class="d-flex" action="{% url 'search' %}" method="POST">
+                    {% csrf_token %}
+                    <input class="form-control mx-1" type="text" name="user_input" placeholder="Search events..." size="35" required>
+                    <input class="btn btn-primary mx-1" type="submit" value="SEARCH">
+                </form>
             </nav>
             <div class="pt-3">
                 <h2>Welcome, {{username}}!</h2>
@@ -43,7 +50,7 @@
                         <br>
                         <br>
                         <p>{{event.event_price}}</p>
-                        <form id="{{event.event_id}}" action="deleteEventFromDatabase/" method="POST">
+                        <form id="{{event.event_id}}" action="{% url 'deleteEventFromDatabase' %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="eventId" value="{{event.event_id}}" readonly="readonly" form="{{event.event_id}}">
                             <input class="btn btn-primary" type="submit" value="REMOVE EVENT" form="{{event.event_id}}">
