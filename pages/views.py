@@ -82,21 +82,39 @@ def settings(request):
     if request.method == "POST":
         user_info = request.POST
         # it doesn't go through all the checks for a typical username/password
-        # mostly just basic checks
+        # mostly just basic checks there are a few edge cases I believe
         if user_info["new_username"] != "" and user_info["new_username"].isspace() == False:
-            update_username = User.objects.get(id=request.user.id)
-            update_username.username = user_info["new_username"]
-            update_username.save()
+            if User.objects.filter(username=user_info["new_username"]).exists():
+                messages.add_message(request, messages.ERROR, "The username already exist.")
+                return redirect(settings)
+            else:
+                update_username = User.objects.get(id=request.user.id)
+                update_username.username = user_info["new_username"]
+                update_username.save()
         if user_info["new_zip"] != "":
-            update_zip = User.objects.get(id=request.user.id)
-            update_zip.zip = user_info["new_zip"]
-            update_zip.save()
-        if (user_info["new_password"] != "" and user_info["confirm_new_password"] != "") and (user_info["new_password"] == user_info["confirm_new_password"]):
-            update_password = User.objects.get(id=request.user.id)
-            update_password.set_password(user_info["new_password"])
-            update_password.save()
-            return redirect(login_page)
-        return redirect(settings)
+            if user_info["new_zip"].isnumeric():
+                update_zip = User.objects.get(id=request.user.id)
+                update_zip.zip = user_info["new_zip"]
+                update_zip.save()
+            else:
+                messages.add_message(request, messages.ERROR, "ZIP Code should only contain numeric values (0-9).")
+                return redirect(settings)
+        if user_info["new_password"] != "" and user_info["confirm_new_password"] != "":
+            if user_info["new_password"] == user_info["confirm_new_password"]:
+                update_password = User.objects.get(id=request.user.id)
+                update_password.set_password(user_info["new_password"])
+                update_password.save()
+                messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded. Please login again.")
+                return redirect(login_page)
+            else:
+                messages.add_message(request, messages.ERROR, "Passwords do not match. Please ensure both password fields match.")
+                return redirect(settings)
+        if user_info["new_username"] == "" and user_info["new_password"] == "" and user_info["confirm_new_password"] == "" and user_info["new_zip"] == "":
+            messages.add_message(request, messages.ERROR, "The fields seem to be empty.")
+            return redirect(settings)
+        else:
+            messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded.")
+            return redirect(settings)
 
 @login_required
 def addEventToDatabase(request):

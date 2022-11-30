@@ -12,6 +12,11 @@
             <a href="{% url 'profile' %}">PROFILE</a>
             <a href="{% url 'settings' %}">SETTINGS</a>
             <h2>Welcome, {{username}}!</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
             <form action="{% url 'settings' %}" method="POST">
                 {% csrf_token %}
                 <p><b>Update Username: </b><input type="text" name="new_username" placeholder="Update your username" maxlength="150"></input></p>
