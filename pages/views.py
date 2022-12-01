@@ -42,32 +42,28 @@ def signup_page(request):
             messages.add_message(request, messages.SUCCESS, "User has been successfully created. You may now login.")
             return redirect(signup_page)
         else:
-            errors = list(form.errors.values())
-            error_string = "ERROR(S):<br>"
-            for i in range(len(errors)):
-                error_string = error_string + str(list(form.errors.values())[i][0]) + "<br>"
+            error_string = getFormErrors(form)
             messages.add_message(request, messages.ERROR, mark_safe(error_string))
             return redirect(signup_page)
 
 def password_reset(request):
     if request.method == "GET":
-        return render(request, 'password_reset.html')
+        reset_password_form = forms.ResetPassword()
+        return render(request, 'password_reset.html', { 'reset_password_form': reset_password_form })
     if request.method == "POST":
         user_info = request.POST
-        if User.objects.filter(username=user_info["username"]).exists():
-            if user_info["new_password"] == user_info["confirm_new_password"]:
-                reset_password = User.objects.get(username=user_info["username"])
-                reset_password.set_password(user_info["new_password"])
-                reset_password.save()
-                messages.add_message(request, messages.SUCCESS, "The password associated with the username has been reset. You can now login.")
-                return redirect(password_reset)
-            else:
-                messages.add_message(request, messages.ERROR, "Passwords do not match. Please ensure both password fields match.")
-                return redirect(password_reset)
-        else:
-            messages.add_message(request, messages.ERROR, "The username does not exist.")
+        form = forms.ResetPassword(user_info)
+        if form.is_valid():
+            reset_password = User.objects.get(username=form.cleaned_data["username"])
+            reset_password.set_password(form.cleaned_data["confirm_password"])
+            reset_password.save()
+            messages.add_message(request, messages.SUCCESS, "The password associated with the username has been reset. You can now login.")
             return redirect(password_reset)
-
+        else:
+            error_string = getFormErrors(form)
+            messages.add_message(request, messages.ERROR, mark_safe(error_string))
+            return redirect(password_reset)
+        
 @login_required
 def index(request):
     events = ticketmaster_api.getEvents(str(request.user.zip_code))
@@ -135,6 +131,13 @@ def settings(request):
         else:
             messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded.")
             return redirect(settings)
+
+def getFormErrors(form):
+    errors = list(form.errors.values())
+    error_string = "ERROR(S):<br>"
+    for i in range(len(errors)):
+        error_string = error_string + str(list(form.errors.values())[i][0]) + "<br>"
+    return error_string
 
 @login_required
 def addEventToDatabase(request):

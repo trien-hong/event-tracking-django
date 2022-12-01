@@ -30,3 +30,21 @@ class Signup(forms.Form):
 class Login(forms.Form):
     username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your password'}))
+
+class ResetPassword(forms.Form):
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your new password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password'}))
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists() == False:
+            raise forms.ValidationError('Username does not exist.')
+        return username
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data['password']
+        confirm_password = self.cleaned_data['confirm_password']
+        if password != confirm_password:
+            raise forms.ValidationError('Passwords do not match.')
+        return confirm_password
