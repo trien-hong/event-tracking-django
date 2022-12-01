@@ -16,10 +16,9 @@
             {% endif %}
             <form action="{% url 'signup_page' %}" method="POST">
                 {% csrf_token %}
-                <p><b>Username: </b><input type="text" name="username" placeholder="Enter your username" maxlength="150" required></input></p>
-                <p><b>Password: </b><input type="password" name="password" placeholder="Enter your password" required></input></p>
-                <p><b>Confirm Password: </b><input type="password" name="confirm_password" placeholder="Confirm your password" required></input></p>
-                <p><b>ZIP Code: </b><input type="text" name="zip" placeholder="Enter your ZIP Code" minlength="5" maxlength="5" required></input></p>
+                <table>
+                    {{signup_form}}
+                </table>
                 <input type="submit" value="SIGNUP">
             </form>
             <hr>
