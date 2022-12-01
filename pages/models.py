@@ -13,4 +13,4 @@ class UserEvents(models.Model):
     user_id = models.PositiveBigIntegerField()
 
 class User(AbstractUser):
-    zip_code = models.PositiveBigIntegerField()
+    zip_code = models.CharField(max_length=5)

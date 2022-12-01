@@ -94,42 +94,34 @@ def profile(request):
 @login_required
 def settings(request):
     if request.method == "GET":
-        return render(request, 'settings.html', { "username": request.user.username })
+        settings_form = forms.Settings()
+        return render(request, 'settings.html', { "username": request.user.username, 'settings_form': settings_form })
     if request.method == "POST":
         user_info = request.POST
-        # it doesn't go through all the checks for a typical username/password
-        # mostly just basic checks there are a few edge cases I believe
-        if user_info["new_username"] != "" and user_info["new_username"].isspace() == False:
-            if User.objects.filter(username=user_info["new_username"]).exists():
-                messages.add_message(request, messages.ERROR, "The username already exist.")
+        form = forms.Settings(user_info)
+        if form.is_valid():
+            if form.cleaned_data["username"] == "" and form.cleaned_data["password"] == "" and form.cleaned_data["confirm_password"] == "" and form.cleaned_data["zip_code"] == "":
+                messages.add_message(request, messages.INFO, "All your fields were empty. There were nothing to update.")
                 return redirect(settings)
-            else:
+            if form.cleaned_data["username"] != "":
                 update_username = User.objects.get(id=request.user.id)
-                update_username.username = user_info["new_username"]
+                update_username.username = form.cleaned_data["username"]
                 update_username.save()
-        if user_info["new_zip_code"] != "":
-            if user_info["new_zip_code"].isnumeric():
+            if form.cleaned_data["zip_code"] != "":
                 update_zip_code = User.objects.get(id=request.user.id)
-                update_zip_code.zip_code = user_info["new_zip_code"]
+                update_zip_code.zip_code = form.cleaned_data["zip_code"]
                 update_zip_code.save()
-            else:
-                messages.add_message(request, messages.ERROR, "ZIP Code should only contain numeric values (0-9).")
-                return redirect(settings)
-        if user_info["new_password"] != "" and user_info["confirm_new_password"] != "":
-            if user_info["new_password"] == user_info["confirm_new_password"]:
+            if form.cleaned_data["password"] != "" and form.cleaned_data["confirm_password"] != "":
                 update_password = User.objects.get(id=request.user.id)
-                update_password.set_password(user_info["new_password"])
+                update_password.set_password(user_info["confirm_password"])
                 update_password.save()
-                messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded. Please login again.")
+                messages.add_message(request, messages.SUCCESS, mark_safe("All applicable fields have been updated. You have been logged out.<br> Please login again."))
                 return redirect(login_page)
-            else:
-                messages.add_message(request, messages.ERROR, "Passwords do not match. Please ensure both password fields match.")
-                return redirect(settings)
-        if user_info["new_username"] == "" and user_info["new_password"] == "" and user_info["confirm_new_password"] == "" and user_info["new_zip_code"] == "":
-            messages.add_message(request, messages.ERROR, "The fields seem to be empty.")
+            messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded.")
             return redirect(settings)
         else:
-            messages.add_message(request, messages.SUCCESS, "All applicable fields have been updatded.")
+            error_string = getFormErrors(form)
+            messages.add_message(request, messages.ERROR, mark_safe(error_string))
             return redirect(settings)
 
 def getFormErrors(form):
