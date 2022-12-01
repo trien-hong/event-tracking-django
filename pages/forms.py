@@ -3,10 +3,10 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Signup(forms.Form):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your password'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm your password'}))
-    zip_code = forms.CharField(max_length=5, widget=forms.TextInput(attrs={'placeholder':'Enter your ZIP code'}))
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username', 'size':'25'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your password', 'size':'25'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm your password', 'size':'25'}))
+    zip_code = forms.CharField(max_length=5, widget=forms.TextInput(attrs={'placeholder':'Enter your ZIP code', 'size':'25'}))
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -30,13 +30,13 @@ class Signup(forms.Form):
         return zip_code
 
 class Login(forms.Form):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your password'}))
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username', 'size':'25'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your password', 'size':'25'}))
 
 class ResetPassword(forms.Form):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your new password'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password'}))
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'placeholder':'Enter your username', 'size':'25'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Enter your new password', 'size':'25'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password', 'size':'25'}))
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -52,10 +52,10 @@ class ResetPassword(forms.Form):
         return confirm_password
 
 class Settings(forms.Form):
-    username = forms.CharField(required=False, max_length=150, widget=forms.TextInput(attrs={'placeholder':'Update your username'}))
-    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Update your new password'}))
-    confirm_password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password'}))
-    zip_code = forms.CharField(max_length=5, required=False, widget=forms.TextInput(attrs={'placeholder':'Update your ZIP code'}))
+    username = forms.CharField(required=False, max_length=150, widget=forms.TextInput(attrs={'placeholder':'Update your username', 'size':'25'}))
+    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Update your new password', 'size':'25'}))
+    confirm_password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password', 'size':'25'}))
+    zip_code = forms.CharField(max_length=5, required=False, widget=forms.TextInput(attrs={'placeholder':'Update your ZIP code', 'size':'25'}))
 
     def clean_username(self):
         username = self.cleaned_data['username']

@@ -74,13 +74,26 @@ def index(request):
 @login_required
 def search(request):
     if request.method == "GET":
-        return render(request, 'search.html', { "events": request.session["events"], "input": request.session["input"]})
+        if "events" not in request.session:
+            messages.add_message(request, messages.ERROR, "You did not properly search for events.")
+            return render(request, 'search.html')
+        elif request.session["events"] == False:
+            messages.add_message(request, messages.INFO, "Your search came up empty. Try searching something else.")
+            request.session["events"] == False
+            return render(request, 'search.html', { "input": request.session["input"] })
+        else:
+            return render(request, 'search.html', { "events": request.session["events"], "input": request.session["input"]})
     if request.method == "POST":
         input = request.POST
         events = ticketmaster_api.getEvents(str(input["user_input"]))
-        request.session["events"] = list(events)
-        request.session["input"] = input["user_input"]
-        return redirect(search)
+        if events != False:
+            request.session["events"] = list(events)
+            request.session["input"] = input["user_input"]
+            return render(request, 'search.html', { "events": request.session["events"], "input": request.session["input"]})
+        else:
+            request.session["events"] = False
+            request.session["input"] = input["user_input"]
+            return redirect(search)
 
 @login_required
 def profile(request):

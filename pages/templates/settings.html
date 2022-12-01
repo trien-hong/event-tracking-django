@@ -38,18 +38,22 @@
             <div class="pt-2">
                 <div class="profile_settings_border">
                     <h4>Update your profile information.</h4>
+                    <hr>
                     {% if messages %}
-                        <hr>
-                        {% for message in messages %}
-                            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                        {% endfor %}
+                        <div class="pb-2">
+                            {% for message in messages %}
+                                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                     <form action="{% url 'settings' %}" method="POST">
                         {% csrf_token %}
                         <table>
                             {{settings_form}}
                         </table>
-                        <input class="btn btn-primary" type="submit" value="SUBMIT UPDATES">
+                        <div class="pt-2">
+                            <input class="btn btn-primary" type="submit" value="SUBMIT UPDATES">
+                        </div>
                     </form>
                     <hr>
                     <h5><u>NOTE</u> * </h5>
