@@ -16,8 +16,9 @@
             {% endif %}
             <form action="{% url 'login_page' %}" method="POST">
                 {% csrf_token %}
-                <p><b>Username: </b><input type="text" name="username" placeholder="Enter your username" required></input></p>
-                <p><b>Password: </b><input type="password" name="password" placeholder="Enter your password" required></input></p>
+                <table>
+                    {{login_form}}
+                </table>
                 <input type="submit" value="LOGIN">
             </form>
             <hr>

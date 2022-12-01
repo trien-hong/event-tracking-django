@@ -12,13 +12,20 @@ import ticketmaster_api
 
 def login_page(request):
     if request.method == "GET":
-        return render(request, 'login_page.html')
+        login_form = forms.Login()
+        return render(request, 'login_page.html', { 'login_form': login_form })
     if request.method == "POST":
         user_info = request.POST
-        user = authenticate(request, username=user_info["username"], password=user_info["password"])
-        if user is not None:
-            login(request, user)
-            return redirect(index)
+        form = forms.Login(user_info)
+        if form.is_valid():
+            user = authenticate(request, username=user_info["username"], password=user_info["password"])
+            if user is not None:
+                login(request, user)
+                messages.add_message(request, messages.SUCCESS, "Login successful!")
+                return redirect(index)
+            else:
+                messages.add_message(request, messages.ERROR, "The username and/or password seem to be incorrect. Please try again.")
+                return redirect(login_page)
         else:
             messages.add_message(request, messages.ERROR, "The username and/or password seem to be incorrect. Please try again.")
             return redirect(login_page)
