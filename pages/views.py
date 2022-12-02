@@ -105,6 +105,12 @@ def profile(request):
         return render(request, 'profile.html', { "username": request.user.username })
 
 @login_required
+def event_details(request):
+    if request.method == "POST":
+        details = ticketmaster_api.getEventDetails(request.POST["eventId"])
+        return render(request, 'event_details.html', { "details": details })
+
+@login_required
 def settings(request):
     if request.method == "GET":
         settings_form = forms.Settings()
@@ -139,7 +145,7 @@ def settings(request):
 
 def getFormErrors(form):
     errors = list(form.errors.values())
-    error_string = "ERROR(S):<br>"
+    error_string = "<u>ERROR(S):</u><br>"
     for i in range(len(errors)):
         error_string = error_string + str(list(form.errors.values())[i][0]) + "<br>"
     return error_string

@@ -46,9 +46,13 @@
                     <div class="event_border">
                         <p>{{event.event_title}}</p>
                         <p>{{event.event_date}} &nbsp|&nbsp {{event.event_location}}</p>
-                        <img src="{{event.event_image_url}}" alt="TBD" style="width:225px;height:126px;">
-                        <br>
-                        <br>
+                        <form method="POST" action="{% url 'event_details' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="eventId" value="{{event.event_id}}" readonly="readonly">
+                            <input type="image" src="{{event.event_image_url}}" alt="Image Unavailable" style="width:225px;height:126px;">
+                        </form>
+                        <div class="pt-2">
+                        </div>
                         <p>{{event.event_price}}</p>
                         <form id="{{event.event_id}}" action="{% url 'deleteEventFromDatabase' %}" method="POST">
                             {% csrf_token %}

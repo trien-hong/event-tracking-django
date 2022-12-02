@@ -42,9 +42,13 @@
                         <div class="event_border">
                             <p>{{event.1}}</p>
                             <p>{{event.3}} &nbsp|&nbsp {{event.4}}</p>
-                            <img src="{{event.2}}" alt="TBD" style="width:225px;height:126px;">
-                            <br>
-                            <br>
+                            <form method="POST" action="{% url 'event_details' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="eventId" value="{{event.0}}" readonly="readonly">
+                                <input type="image" src="{{event.2}}" alt="Image Unavailable" style="width:225px;height:126px;">
+                            </form>
+                            <div class="pt-2">
+                            </div>
                             <p>{{event.5}} - {{event.6}}</p>
                             <form id="{{event.0}}" action="{% url 'addEventToDatabase' %}" method="POST">
                                 {% csrf_token %}

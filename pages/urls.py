@@ -7,10 +7,11 @@ urlpatterns = [
     path('signup_page/', views.signup_page, name='signup_page'),
     path('password_reset/', views.password_reset, name='password_reset'),
     path('index/', views.index, name='index'),
-    path('index/addEventToDatabase/', views.addEventToDatabase, name='addEventToDatabase'),
     path('search/', views.search, name='search'),
     path('profile/', views.profile, name='profile'),
-    path('profile/deleteEventFromDatabase/', views.deleteEventFromDatabase, name='deleteEventFromDatabase'),
     path('profile/settings/', views.settings, name='settings'),
+    path('addEventToDatabase/', views.addEventToDatabase, name='addEventToDatabase'),
+    path('deleteEventFromDatabase/', views.deleteEventFromDatabase, name='deleteEventFromDatabase'),
+    path('event_details/', views.event_details, name='event_details'),
     path('logout_action/', views.logout_action, name='logout_action'),
 ]

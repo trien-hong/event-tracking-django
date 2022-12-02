@@ -53,8 +53,8 @@ class ResetPassword(forms.Form):
 
 class Settings(forms.Form):
     username = forms.CharField(required=False, max_length=150, widget=forms.TextInput(attrs={'placeholder':'Update your username', 'size':'25'}))
-    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Update your new password', 'size':'25'}))
-    confirm_password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Confirm your new password', 'size':'25'}))
+    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Update your password', 'size':'25'}))
+    confirm_password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'Confirm your password', 'size':'25'}))
     zip_code = forms.CharField(max_length=5, required=False, widget=forms.TextInput(attrs={'placeholder':'Update your ZIP code', 'size':'25'}))
 
     def clean_username(self):

@@ -4,7 +4,6 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
-
 def getEvents(input):
     TICKERTMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
 
@@ -69,3 +68,76 @@ def getEvents(input):
         return False
 
     return zip(idList, titleList, imageList, dateList, cityList, minPriceList, maxPriceList)
+
+def getEventDetails(eventId):
+    TICKERTMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
+
+    url = (
+        "https://app.ticketmaster.com/discovery/v2/events/" + eventId + "?apikey=" + TICKERTMASTER_API_KEY + "&locale=*"
+    )
+
+    ticketmaster_request = requests.get(url=url)
+
+    ticketmaster_response_json = ticketmaster_request.json()
+
+    try:
+        title = ticketmaster_response_json["name"]
+    except KeyError as e:
+        title = "TBD"
+
+    try:
+        eventImageUrl = ticketmaster_response_json["images"][0]["url"]
+    except KeyError as e:
+        eventImageUrl = "TBD"
+    
+    try:
+        startDate = ticketmaster_response_json["dates"]["start"]["localDate"]
+    except:
+        startDate = "TBD"
+
+    try:
+        genre = ticketmaster_response_json["classifications"][0]["genre"]["name"]
+    except:
+        genre = "TBD/NA"
+    
+    try:
+        minPrice = "$" + str(ticketmaster_response_json["priceRanges"][0]["min"])
+    except KeyError as e:
+        minPrice = "TBD"
+
+    try:
+        maxPrice = "$" + str(ticketmaster_response_json["priceRanges"][0]["max"])
+    except KeyError as e:
+        maxPrice = "TBD"
+
+    try:
+        venue = ticketmaster_response_json["_embedded"]["venues"][0]["name"]
+    except:
+        venue = "TBD"
+
+    try:
+        address = ticketmaster_response_json["_embedded"]["venues"][0]["address"]["line1"] + ", " + ticketmaster_response_json["_embedded"]["venues"][0]["city"]["name"] + ", " + ticketmaster_response_json["_embedded"]["venues"][0]["postalCode"]
+    except:
+        address = "TBD"
+
+    try:
+        latitude = ticketmaster_response_json["_embedded"]["venues"][0]["location"]["latitude"]
+        longitude = ticketmaster_response_json["_embedded"]["venues"][0]["location"]["longitude"]
+    except KeyError as e:
+        latitude = "TBD"
+        longitude = "TBD"
+    
+    details = {
+        "title": title,
+        "eventImageUrl": eventImageUrl,
+        "startDate": startDate,
+        "genre": genre,
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "venu": venue,
+        "address": address,
+        "latitude": latitude,
+        "longitude": longitude
+    }
+
+    return details
