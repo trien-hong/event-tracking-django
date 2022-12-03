@@ -9,6 +9,7 @@ from . import views
 from . models import UserEvents
 from . import forms
 import ticketmaster_api
+import openweathermap_api
 
 def login_page(request):
     if request.method == "GET":
@@ -107,8 +108,9 @@ def profile(request):
 @login_required
 def event_details(request):
     if request.method == "POST":
-        details = ticketmaster_api.getEventDetails(request.POST["eventId"])
-        return render(request, 'event_details.html', { "details": details })
+        event_details = ticketmaster_api.getEventDetails(request.POST["eventId"])
+        weather_details = openweathermap_api.getWeatherDetails(event_details["latitude"], event_details["longitude"])
+        return render(request, 'event_details.html', { "event_details": event_details, "weather_details": weather_details })
 
 @login_required
 def settings(request):

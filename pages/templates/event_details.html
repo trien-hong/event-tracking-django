@@ -13,14 +13,20 @@
     </div>
 {% endif %}
 <div class="pt-2">
-    <h2>{{ details.title }}</h2>
+    <h2>{{event_details.title}}</h2>
 </div>
 <hr>
-<input type="image" src="{{details.eventImageUrl}}" alt="Image Unavailable" style="width:500px;height:281px;">
-<p>Start Date: {{details.startDate}}</p>
-<p>Genre: {{details.genre}}</p>
-<p>Min Price: {{details.minPrice}}</p>
-<p>Max Price: {{details.maxPrice}}</p>
-<p>Venu: {{details.venu}}</p>
-<p>Address: {{details.address}}</p>
+<input type="image" src="{{event_details.eventImageUrl}}" alt="Image Unavailable" style="width:500px;height:281px;">
+<p><b>Start Date:</b> {{event_details.startDate}}</p>
+<p><b>Genre:</b> {{event_details.genre}}</p>
+<p><b>Min Price:</b> {{event_details.minPrice}}</p>
+<p><b>Max Price:</b> {{event_details.maxPrice}}</p>
+<p><b>Venu:</b> {{event_details.venu}}</p>
+<p><b>Address:</b> {{event_details.address}}</p>
+
+<img src="http://openweathermap.org/img/wn/{{weather_details.weather_icon}}@2x.png" class="rounded float-up" alt="Image Unavailable"/>
+<p><b>{{weather_details.weather_description}}</b>
+<p><b>Temperature:</b> {{weather_details.temperature_f}}°F/{{weather_details.temperature_c}}°C</p>
+<p><b>Low:</b> {{weather_details.temperature_min_f}}°F/{{weather_details.temperature_min_c}}°C | <b>High:</b> {{weather_details.temperature_max_f}}°F/{{weather_details.temperature_max_c}}°C</p>
+<p><b>Humidity:</b> {{weather_details.humidity}} | <b>Wind:</b> {{weather_details.wind}} knots</p>
 {% endblock %}

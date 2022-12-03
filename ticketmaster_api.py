@@ -9,11 +9,19 @@ def getEvents(input):
 
     if len(input) == 5 and input.isnumeric():
         url = (
-            "https://app.ticketmaster.com/discovery/v2/events?apikey=" + TICKERTMASTER_API_KEY + "&postalCode=" + input + "&locale=*"
+            "https://app.ticketmaster.com/discovery/v2/events?apikey="
+            + TICKERTMASTER_API_KEY
+            + "&postalCode="
+            + input
+            + "&locale=*"
         )
     else:
         url = (
-            "https://app.ticketmaster.com/discovery/v2/events?apikey=" + TICKERTMASTER_API_KEY + "&keyword=" + input + "&locale=*"
+            "https://app.ticketmaster.com/discovery/v2/events?apikey="
+            + TICKERTMASTER_API_KEY
+            + "&keyword="
+            + input
+            + "&locale=*"
         )
 
     ticketmaster_request = requests.get(url=url)
