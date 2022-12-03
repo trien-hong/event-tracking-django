@@ -1,5 +1,6 @@
 .env
 *.pyc
 *.pyo
+/database
 pages/migrations/*
 !pages/migrations/__init__.py

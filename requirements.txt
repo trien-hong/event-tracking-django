@@ -1,0 +1,7 @@
+python-dotenv
+requests
+asgiref
+Django
+pytz
+sqlparse
+psycopg2-binary
