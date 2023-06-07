@@ -8,7 +8,7 @@
 {% endblock %}
 {% block homepage %}<a class="btn btn-primary mx-1" href="{% url 'index' %}">HOMEPAGE</a>{% endblock %}
 {% block profile %}<a class="btn btn-primary mx-1" href="{% url 'profile' %}">PROFILE</a>{% endblock %}
-{% block settings %}<a class="btn btn-primary mx-1" href="{% url 'settings' %}">SETTINGS</a>{% endblock %}
+{% block settings %}{% endblock %}
 {% block logout_action %}<a class="btn btn-primary mx-1" href="{% url 'logout_action' %}">LOGOUT</a>{% endblock %}
 {% block content %}
     {% if messages %}

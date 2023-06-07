@@ -5,12 +5,12 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
 def getEvents(input):
-    TICKERTMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
+    TICKETMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
 
     if len(input) == 5 and input.isnumeric():
         url = (
             "https://app.ticketmaster.com/discovery/v2/events?apikey="
-            + TICKERTMASTER_API_KEY
+            + TICKETMASTER_API_KEY
             + "&postalCode="
             + input
             + "&locale=*"
@@ -18,7 +18,7 @@ def getEvents(input):
     else:
         url = (
             "https://app.ticketmaster.com/discovery/v2/events?apikey="
-            + TICKERTMASTER_API_KEY
+            + TICKETMASTER_API_KEY
             + "&keyword="
             + input
             + "&locale=*"
@@ -78,10 +78,14 @@ def getEvents(input):
     return zip(idList, titleList, imageList, dateList, cityList, minPriceList, maxPriceList)
 
 def getEventDetails(eventId):
-    TICKERTMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
+    TICKETMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
 
     url = (
-        "https://app.ticketmaster.com/discovery/v2/events/" + eventId + "?apikey=" + TICKERTMASTER_API_KEY + "&locale=*"
+        "https://app.ticketmaster.com/discovery/v2/events/"
+        + eventId
+        + "?apikey="
+        + TICKETMASTER_API_KEY
+        + "&locale=*"
     )
 
     ticketmaster_request = requests.get(url=url)
